@@ -2,8 +2,11 @@ name: 直播状态检测
 
 on:
   schedule:
-    - cron: "*/15 * * * *"  # 每15分钟
-  workflow_dispatch:       # 手动触发
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - rooms.json
 
 permissions:
   contents: write
@@ -31,9 +34,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add state.json status.json history.json
-          if git diff --cached --quiet; then
-            echo "No changes"
-          else
-            git commit -m "📡 Update live status [skip ci]"
-            git push
-          fi
+          git commit -m "📡 Update live status" && git push || echo "No changes to push"
