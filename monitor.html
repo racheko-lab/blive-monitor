@@ -111,7 +111,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
       <div style="text-align:center;padding:16px;color:var(--text2);font-size:12px">还没有添加房间</div>
     </div>
     <div class="tip">
-      💡 网页里添加的房间仅本地显示。要加入 GitHub Actions 自动监控和微信推送，需同时更新仓库 Secret 中的 <code>BLIVE_CONFIG</code>。
+      💡 网页添加的房间仅本地显示。要启用后台监控 + 微信推送，需将房间号<a href="https://github.com/racheko-lab/blive-monitor/edit/master/rooms.json" target="_blank">编辑到 rooms.json →</a>
     </div>
   </div>
 </details>
@@ -137,6 +137,7 @@ const DEFAULT_URL = "status.json";  // 同域名，无CORS问题
 const LS_ROOMS = 'blive_myrooms';
 let currentTab = 'all';
 let statusData = null;
+let repoRooms = [];  // 仓库 rooms.json 中的房间
 let myRooms = [];
 let selectedPlatform = 'bilibili';
 let autoTimer = null;
@@ -226,35 +227,37 @@ function refresh() {
 async function fetchStatus() {
   document.getElementById('statusDot').innerHTML = '<span class="dot dot-warn"></span>加载中';
   
-  // 优先同域名（无 CORS），失败用 jsDelivr CDN，再失败用 GitHub Raw
-  const urls = [
-    "status.json",
-    "https://cdn.jsdelivr.net/gh/racheko-lab/blive-monitor@master/status.json",
-    "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/status.json"
-  ];
-  
-  let error;
-  for (const url of urls) {
-    try {
-      const resp = await fetch(url, { signal: AbortSignal.timeout(8000) });
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      statusData = await resp.json();
-      
-      const now = new Date();
-      document.getElementById('updateTime').textContent = now.toLocaleTimeString('zh-CN');
-      const hasLive = (statusData.rooms||[]).some(r => r.status==='live');
-      document.getElementById('statusDot').innerHTML = hasLive
-        ? '<span class="dot dot-live"></span>有直播'
-        : '<span class="dot dot-ok"></span>已更新';
-      renderRooms();
-      document.querySelector('.footer-bar .btn-p').innerHTML = '🔍 刷新';
-      return;
-    } catch(e) { error = e; }
+  // 同时拉取 rooms.json 和 status.json
+  try {
+    const [statusResp, roomsResp] = await Promise.all([
+      fetch("status.json", { signal: AbortSignal.timeout(8000) }),
+      fetch("rooms.json", { signal: AbortSignal.timeout(8000) })
+    ]);
+    
+    if (statusResp.ok) statusData = await statusResp.json();
+    if (roomsResp.ok) {
+      repoRooms = await roomsResp.json();
+      // 仓库房间自动补全本地缺失的
+      for (const rr of repoRooms) {
+        if (!myRooms.some(r => r.platform === rr.platform && String(r.id) === String(rr.id))) {
+          myRooms.push({...rr});
+        }
+      }
+      saveRooms();
+      renderRoomConfigList();
+    }
+    
+    const now = new Date();
+    document.getElementById('updateTime').textContent = now.toLocaleTimeString('zh-CN');
+    const hasLive = (statusData && statusData.rooms || []).some(r => r.status==='live');
+    document.getElementById('statusDot').innerHTML = hasLive
+      ? '<span class="dot dot-live"></span>有直播'
+      : '<span class="dot dot-ok"></span>已更新';
+    renderRooms();
+  } catch(e) {
+    document.getElementById('statusDot').innerHTML = '<span class="dot dot-warn"></span>加载失败';
+    renderRooms();
   }
-  
-  // 所有URL都失败
-  document.getElementById('statusDot').innerHTML = '<span class="dot dot-warn"></span>加载失败';
-  renderRooms();  // 显示本地房间但无状态数据
   document.querySelector('.footer-bar .btn-p').innerHTML = '🔍 刷新';
 }
 

@@ -11,11 +11,17 @@ from datetime import datetime
 REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 STATE_FILE = os.path.join(REPO_DIR, "state.json")
 STATUS_FILE = os.path.join(REPO_DIR, "status.json")
+ROOMS_FILE = os.path.join(REPO_DIR, "rooms.json")
 
-# 从 GitHub Secrets 读取配置
 def load_config():
+    # rooms 从仓库文件读取, sendkey 从 Secret 读取
+    rooms = []
+    if os.path.exists(ROOMS_FILE):
+        with open(ROOMS_FILE) as f:
+            rooms = json.load(f)
     raw = os.environ.get("BLIVE_CONFIG", "{}")
-    return json.loads(raw)
+    cfg = json.loads(raw)
+    return {"sendkey": cfg.get("sendkey", ""), "rooms": rooms}
 
 def fetch_bilibili(room_id):
     url = f"https://api.live.bilibili.com/room/v1/Room/get_info?room_id={room_id}"
