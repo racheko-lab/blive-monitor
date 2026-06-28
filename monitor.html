@@ -228,17 +228,17 @@ function refresh() {
 async function fetchStatus() {
   document.getElementById('statusDot').innerHTML = '<span class="dot dot-warn"></span>加载中';
   
-  // 同时拉取 rooms.json 和 status.json
+  // 先拉 status.json
   try {
-    const [statusResp, roomsResp] = await Promise.all([
-      fetch("status.json", { signal: AbortSignal.timeout(8000) }),
-      fetch("rooms.json", { signal: AbortSignal.timeout(8000) })
-    ]);
-    
-    if (statusResp.ok) statusData = await statusResp.json();
-    if (roomsResp.ok) {
-      repoRooms = await roomsResp.json();
-      // 仓库房间自动补全本地缺失的
+    const r = await fetch("status.json", { signal: AbortSignal.timeout(8000) });
+    if (r.ok) statusData = await r.json();
+  } catch(e) { /* ignore */ }
+  
+  // 再拉 rooms.json 补全本地房间
+  try {
+    const r = await fetch("rooms.json", { signal: AbortSignal.timeout(8000) });
+    if (r.ok) {
+      repoRooms = await r.json();
       for (const rr of repoRooms) {
         if (!myRooms.some(r => r.platform === rr.platform && String(r.id) === String(rr.id))) {
           myRooms.push({...rr});
@@ -247,18 +247,17 @@ async function fetchStatus() {
       saveRooms();
       renderRoomConfigList();
     }
-    
-    const now = new Date();
-    document.getElementById('updateTime').textContent = now.toLocaleTimeString('zh-CN');
-    const hasLive = (statusData && statusData.rooms || []).some(r => r.status==='live');
-    document.getElementById('statusDot').innerHTML = hasLive
-      ? '<span class="dot dot-live"></span>有直播'
-      : '<span class="dot dot-ok"></span>已更新';
-    renderRooms();
-  } catch(e) {
-    document.getElementById('statusDot').innerHTML = '<span class="dot dot-warn"></span>加载失败';
-    renderRooms();
-  }
+  } catch(e) { /* ignore */ }
+  
+  const now = new Date();
+  document.getElementById('updateTime').textContent = now.toLocaleTimeString('zh-CN');
+  
+  const hasLive = (statusData && statusData.rooms || []).some(r => r.status==='live');
+  document.getElementById('statusDot').innerHTML = hasLive
+    ? '<span class="dot dot-live"></span>有直播'
+    : '<span class="dot dot-ok"></span>已更新';
+  
+  renderRooms();
   document.querySelector('.footer-bar .btn-p').innerHTML = '🔍 刷新';
 }
 
@@ -359,7 +358,12 @@ function toggleAuto() {
 function renderAll() { renderRoomConfigList(); renderRooms(); }
 function esc(s) { return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
 
-document.addEventListener('DOMContentLoaded', () => { loadRooms(); renderRoomConfigList(); refresh(); });
+document.addEventListener('DOMContentLoaded', () => {
+  loadRooms();
+  renderRoomConfigList();
+  renderRooms();      // 立即显示本地房间
+  fetchStatus();      // 异步加载远程数据（不阻塞UI）
+});
 window.addEventListener('beforeunload', () => { if (autoTimer) clearInterval(autoTimer); });
 </script>
 </body>
