@@ -1,1 +1,15 @@
-{"updated":"","rooms":[]}
+{
+  "updated": "2026-06-28 11:07:37",
+  "rooms": [
+    {
+      "platform": "bilibili",
+      "id": "22230707",
+      "name": "峰哥亡命天涯",
+      "status": "offline",
+      "title": "be一会儿",
+      "online": 0,
+      "area": "生活·户外",
+      "time": "2026-06-28 11:07:37"
+    }
+  ]
+}
