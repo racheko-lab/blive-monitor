@@ -7,7 +7,11 @@ B站/抖音直播状态检测（GitHub Actions 用）
 - 更新 status.json / state.json / history.json
 """
 import json, os, re, sys, time, urllib.request, urllib.parse
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+# 北京时间（UTC+8）
+def bjnow():
+    return datetime.now(timezone.utc).replace(tzinfo=None) + timedelta(hours=8)
 
 REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 STATE_FILE = os.path.join(REPO_DIR, "state.json")
@@ -60,7 +64,7 @@ def fetch_bilibili(room_id):
         "title": d.get("title", ""),
         "online": d.get("online", 0),
         "area": f"{d.get('parent_area_name', '')}·{d.get('area_name', '')}".strip("·") or "",
-        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "time": bjnow().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
 
@@ -104,20 +108,20 @@ def fetch_douyin(web_rid):
             "online": user_count,
             "area": "",
             "nickname": nickname or "",
-            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "time": bjnow().strftime("%Y-%m-%d %H:%M:%S"),
         }
 
     # 方法2: 兜底 - 关键词匹配
     if "直播已结束" in html:
-        return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
 
     share_match = re.search(r'shareDesc["\s]*value=["\s]*([^"]+)', html)
     if share_match and "正在直播" in share_match.group(1):
         title_match = re.search(r'shareTitle["\s]*value=["\s]*([^"]+)', html)
         title = title_match.group(1).replace("的直播", "") if title_match else ""
-        return {"status": "live", "title": title, "online": 0, "area": "", "nickname": nickname or "", "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+        return {"status": "live", "title": title, "online": 0, "area": "", "nickname": nickname or "", "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
 
-    return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
 
 
 def send_wechat_push(sendkey, title, desp):
@@ -152,7 +156,7 @@ def format_push_title(name, result):
 def format_push_desp(name, platform, rid, result):
     platform_label = "B站" if platform == "bilibili" else "抖音"
     live_url = f"https://live.bilibili.com/{rid}" if platform == "bilibili" else f"https://live.douyin.com/{rid}"
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = bjnow().strftime("%Y-%m-%d %H:%M:%S")
     lines = [
         f"## 🎬 {name} 开播了！" if result["status"] == "live" else f"## ▶️ {name} 轮播/回放中",
         "",
@@ -193,7 +197,7 @@ def main():
     new_state = {}
     status_list = []
     log_entries = []
-    now = datetime.now()
+    now = bjnow()
     now_str = now.strftime("%Y-%m-%d %H:%M:%S")
 
     print(f"[{now:%H:%M:%S}] Checking {len(rooms)} rooms...")
