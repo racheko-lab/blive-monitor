@@ -94,6 +94,12 @@ def fetch_douyin(web_rid):
             nickname = val
             break
 
+    # 提取 sec_uid
+    sec_uid = ""
+    sec_match = re.search(r'\\"sec_uid\\":\\"([^"\\]+)\\"', html)
+    if sec_match:
+        sec_uid = sec_match.group(1)
+
     web_rid_match = re.search(r'\\"web_rid\\":\\"([^"\\]+)\\"', html)
     actual_web_rid = web_rid_match.group(1) if web_rid_match else web_rid
 
@@ -109,20 +115,21 @@ def fetch_douyin(web_rid):
             "online": user_count,
             "area": "",
             "nickname": nickname or "",
+            "sec_uid": sec_uid,
             "time": bjnow().strftime("%Y-%m-%d %H:%M:%S"),
         }
 
     # 方法2: 兜底 - 关键词匹配
     if "直播已结束" in html:
-        return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
+        return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "sec_uid": sec_uid, "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
 
     share_match = re.search(r'shareDesc["\s]*value=["\s]*([^"]+)', html)
     if share_match and "正在直播" in share_match.group(1):
         title_match = re.search(r'shareTitle["\s]*value=["\s]*([^"]+)', html)
         title = title_match.group(1).replace("的直播", "") if title_match else ""
-        return {"status": "live", "title": title, "online": 0, "area": "", "nickname": nickname or "", "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
+        return {"status": "live", "title": title, "online": 0, "area": "", "nickname": nickname or "", "sec_uid": sec_uid, "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
 
-    return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
+    return {"status": "offline", "title": "", "online": 0, "area": "", "nickname": nickname or "", "sec_uid": sec_uid, "time": bjnow().strftime("%Y-%m-%d %H:%M:%S")}
 
 
 def send_wechat_push(sendkey, title, desp):
@@ -284,6 +291,9 @@ def main():
         t["live_start"] = live_start_str
         if live_duration:
             t["live_duration"] = live_duration
+        # 保存 sec_uid（供新作品检测复用）
+        if platform == "douyin" and result.get("sec_uid"):
+            t["sec_uid"] = result["sec_uid"]
         tracking[key] = t
 
         # 追加到 status 数据
