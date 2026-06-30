@@ -17,6 +17,7 @@ REPO_DIR = os.path.dirname(os.path.abspath(__file__))
 STATE_FILE = os.path.join(REPO_DIR, "state.json")
 STATUS_FILE = os.path.join(REPO_DIR, "status.json")
 HISTORY_FILE = os.path.join(REPO_DIR, "history.json")
+TRACKING_FILE = os.path.join(REPO_DIR, "tracking.json")
 ROOMS_FILE = os.path.join(REPO_DIR, "rooms.json")
 
 
@@ -200,6 +201,15 @@ def main():
     now = bjnow()
     now_str = now.strftime("%Y-%m-%d %H:%M:%S")
 
+    # 读取开播追踪数据
+    tracking = {}
+    if os.path.exists(TRACKING_FILE):
+        try:
+            with open(TRACKING_FILE) as f:
+                tracking = json.load(f)
+        except:
+            tracking = {}
+
     print(f"[{now:%H:%M:%S}] Checking {len(rooms)} rooms...")
 
     for room in rooms:
@@ -236,6 +246,49 @@ def main():
             "area": result.get("area", ""),
             "time": result.get("time", ""),
         })
+
+        # 开播追踪：记录开播开始时间、上次开播、直播时长
+        t = tracking.get(key, {})
+        last_live = t.get("last_live", "")
+        live_start_str = t.get("live_start", "")
+        live_duration = ""
+
+        if result["status"] == "live":
+            if not live_start_str:
+                # 刚开播，记录开始时间
+                live_start_str = now_str
+            else:
+                # 持续直播中，计算时长
+                try:
+                    start_dt = datetime.strptime(live_start_str, "%Y-%m-%d %H:%M:%S")
+                    secs = int((now - start_dt).total_seconds())
+                    h, m = divmod(secs, 3600)
+                    m, s = divmod(m, 60)
+                    live_duration = f"{h}h{m}min" if h > 0 else f"{m}min"
+                except:
+                    pass
+        elif live_start_str:
+            # 下播了，计算本次时长
+            try:
+                start_dt = datetime.strptime(live_start_str, "%Y-%m-%d %H:%M:%S")
+                secs = int((now - start_dt).total_seconds())
+                h, m = divmod(secs, 3600)
+                m, s = divmod(m, 60)
+                last_live = live_start_str
+                t["last_duration"] = f"{h}h{m}min" if h > 0 else f"{m}min"
+            except:
+                pass
+            live_start_str = ""
+
+        t["last_live"] = last_live
+        t["live_start"] = live_start_str
+        if live_duration:
+            t["live_duration"] = live_duration
+        tracking[key] = t
+
+        # 追加到 status 数据
+        status_list[-1]["last_live"] = last_live
+        status_list[-1]["live_duration"] = live_duration
 
         # 状态变化 → 推送
         prev_status = prev_state.get(key)
@@ -286,6 +339,8 @@ def main():
         json.dump(new_state, f, ensure_ascii=False, indent=2)
     with open(STATUS_FILE, "w") as f:
         json.dump({"updated": now_str, "rooms": status_list}, f, ensure_ascii=False, indent=2)
+    with open(TRACKING_FILE, "w") as f:
+        json.dump(tracking, f, ensure_ascii=False, indent=2)
 
     # 更新日志（保留最近 200 条）
     old_log = []

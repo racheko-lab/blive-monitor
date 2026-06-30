@@ -1,9 +1,6 @@
 /**
- * B站/抖音直播监控 - Cloudflare Worker (轻量版)
- * 只负责定时触发 GitHub Action，检测逻辑仍在 check_status.py 中
- * 
- * Cron Triggers: */10 * * * *  (每10分钟)
- * 环境变量: GH_TOKEN (GitHub token)
+ * 直播监控 - Cloudflare Worker 定时触发器
+ * 每10分钟触发一次 GitHub Action
  */
 const GH_OWNER = "racheko-lab";
 const GH_REPO = "blive-monitor";

@@ -99,6 +99,8 @@ function ren(){
     if(s&&s.title)ex.push('标题: '+e(s.title));
     if(s&&s.area)ex.push(s.area);
     if(s&&s.online)ex.push('人气: '+s.online);
+    if(s&&s.last_live)ex.push('上次开播: '+s.last_live.substring(5,16));
+    if(s&&s.live_duration)ex.push('⏱ '+s.live_duration);
     h+='<div class="card '+cls+'"><div style="display:flex;justify-content:space-between;align-items:flex-start"><span style="font-size:15px;font-weight:700">'+e(s?s.name:r.name)+'</span><span class="tag '+(r.platform==='bilibili'?'tag-bili':'tag-dy')+'">'+pl+'</span></div><span class="badge '+bc+'">'+bt+'</span>'+(ex.length?'<div class="info">'+ex.join(' | ')+'</div>':'')+(s&&s.status==='live'?'<a class="btn-go" href="'+u+'" target="_blank">👉 进入直播间</a>':'')+'</div>';
   }
   lb.innerHTML=h;
