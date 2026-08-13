@@ -77,7 +77,13 @@ jobs:
       # CI 自身对 post_rooms.json 的 sec_uid/昵称回写提交带 [skip ci]，不会触发本分支，故无循环。
       - name: Decide force post-check
         run: |
-          if [ "${{ github.event_name }}" = "push" ] || [ "${{ github.event.inputs.force_post_check }}" = "true" ]; then
+          # push（前端增删账号直连 Contents API 提交 post_rooms.json）与
+          # workflow_dispatch（前端「立即触发一次监控」按钮 triggerMonitor()）都应绕过
+          # 15 分钟闸门立即抓取；只有 schedule（每 5 分钟定时）才受闸门约束。
+          # 此前仅对 push 放开，导致 triggerMonitor() 的立即触发 14/15 概率被 15 分钟窗口吞掉。
+          # 同时兼容 workflow_dispatch 的 force_post_check input（默认 false，前端未传时靠
+          # event_name 判定照样强制），双保险确保「立即触发」按钮一定绕过闸门。
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.inputs.force_post_check }}" = "true" ]; then
             echo "FORCE_POST_CHECK=true" >> "$GITHUB_ENV"
           else
             echo "FORCE_POST_CHECK=false" >> "$GITHUB_ENV"

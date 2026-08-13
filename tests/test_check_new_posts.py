@@ -167,8 +167,8 @@ def _seed(tmp_path, monkeypatch, post_rooms, tracking=None, push_cfg='{"push":{"
     return tracking_file
 
 
-def test_main_first_run_establishes_baseline_no_notify(tmp_path, monkeypatch):
-    """首次运行仅建立基线，不推送（避免启用即轰炸）。"""
+def test_main_first_run_establishes_baseline_and_pushes_latest(tmp_path, monkeypatch):
+    """首次运行建立基线，并把当前最新一条作品推给用户（添加后立即可见，无需等下一部新作）。"""
     _install_fake_playwright()
     tf = _seed(tmp_path, monkeypatch, [{"id": "MS4wABC", "name": "阿伟"}])
     calls = []
@@ -183,7 +183,9 @@ def test_main_first_run_establishes_baseline_no_notify(tmp_path, monkeypatch):
     tracking = json.loads(tf.read_text(encoding="utf-8"))
     assert tracking["douyin_MS4wABC"]["latest_aweme_id"] == "999"
     assert tracking["douyin_MS4wABC"]["latest_ct"] == 1700000000
-    assert calls == []
+    # 首轮推一条最新作品（而非「仅建基线不推送」）
+    assert len(calls) == 1
+    assert "新作品" in calls[0]
 
 
 def test_main_detects_new_post_and_notifies(tmp_path, monkeypatch):
@@ -913,3 +915,113 @@ def test_order_rooms_baseline_first():
     legacy = [{"id": "L1"}, {"platform": "kuaishou", "id": "NEWK"}]
     t3 = {"douyin_L1": {"latest_post_id": "p"}}
     assert [e["id"] for e in cnp.order_rooms_baseline_first(legacy, t3)] == ["NEWK", "L1"]
+
+
+def test_handle_kuaishou_posts_gated_streak_and_alert(tmp_path, monkeypatch):
+    """§4.4：快手连续被风控 → gated_streak 累加；达阈值(2)才推送一次告警，不刷屏。"""
+    import backend.adapters.kuaishou as kmod
+
+    tf = _seed(tmp_path, monkeypatch,
+               [{"id": "Nizi981116", "name": "Nizi981116", "platform": "kuaishou"}],
+               tracking={})
+    alerts = []
+    monkeypatch.setattr(cnp, "dispatch_event",
+                        lambda cfg, ctx, title, desp: alerts.append(title) or types.SimpleNamespace(ok=True, last_error=None))
+    allow = {"n": 1}
+    monkeypatch.setattr(cnp, "dedup_should_notify",
+                        lambda dkey, cooldown=0: bool(allow["n"] > 0 and not allow.__setitem__("n", allow["n"] - 1)))
+    monkeypatch.setattr(cnp, "dedup_record", lambda dkey: None)
+
+    class _GatedAdapter:
+        def __init__(self, credentials=None):
+            pass
+
+        def fetch_new_posts(self, rid, baseline=None, context=None):
+            raise kmod.AdapterGated(detail="gated")
+
+    monkeypatch.setattr(kmod, "KuaishouAdapter", _GatedAdapter)
+    monkeypatch.setattr(kmod, "resolve_kuaishou_identity", lambda *a, **k: None)
+    monkeypatch.setattr(kmod, "apply_identity_to_config", lambda *a, **k: None)
+    monkeypatch.setattr(kmod, "apply_identity_to_tracking", lambda *a, **k: None)
+
+    cfg = json.loads('{"push":{"type":"bark","url":"https://api.day.app/K"}}')
+    entry = {"id": "Nizi981116", "name": "Nizi981116", "platform": "kuaishou"}
+    tracking = {}
+
+    cnp.handle_kuaishou_posts(entry, tracking, cfg, {}, "2026-08-14 00:00:00", context=object())
+    assert tracking["kuaishou_Nizi981116"]["gated_streak"] == 1
+    assert len(alerts) == 0  # 阈值=2，第一轮未达
+
+    cnp.handle_kuaishou_posts(entry, tracking, cfg, {}, "2026-08-14 00:15:00", context=object())
+    assert tracking["kuaishou_Nizi981116"]["gated_streak"] == 2
+    assert len(alerts) == 1  # 达阈值，推送一次
+    assert "持续被风控" in alerts[0]
+
+
+def test_maybe_alert_kuaishou_gated_cooldown(monkeypatch):
+    """§4.4：冷却期内不重复推送（哪怕仍退化）。"""
+    calls = []
+    monkeypatch.setattr(cnp, "dispatch_event",
+                        lambda cfg, ctx, title, desp: calls.append(title) or types.SimpleNamespace(ok=True, last_error=None))
+    allow = {"n": 1}
+    monkeypatch.setattr(cnp, "dedup_should_notify",
+                        lambda dkey, cooldown=0: bool(allow["n"] > 0 and not allow.__setitem__("n", allow["n"] - 1)))
+    recorded = []
+    monkeypatch.setattr(cnp, "dedup_record", lambda dkey: recorded.append(dkey))
+
+    cfg = json.loads('{"push":{"type":"bark","url":"https://api.day.app/K"}}')
+    entry = {"id": "Nizi981116", "name": "Nizi981116", "tags": ["kuaishou"]}
+
+    cnp._maybe_alert_kuaishou_gated("Nizi981116", "Nizi981116", 2, cfg, entry, "2026-08-14 00:00:00")
+    assert len(calls) == 1
+    assert recorded == ["kuaishou_gated:Nizi981116"]
+
+    cnp._maybe_alert_kuaishou_gated("Nizi981116", "Nizi981116", 3, cfg, entry, "2026-08-14 00:15:00")
+    assert len(calls) == 1  # 冷却期内不再推送
+
+
+def test_handle_kuaishou_posts_first_run_pushes_latest(tmp_path, monkeypatch):
+    """§首次：快手首轮建基线（取最新一条）并推送「已开始监控（最新作品）」，
+    添加账号后立即可见其已有最新作品，无需等下一部新作。"""
+    import backend.adapters.kuaishou as kmod
+
+    tf = _seed(tmp_path, monkeypatch,
+               [{"id": "Nizi981116", "name": "Nizi981116", "platform": "kuaishou"}],
+               tracking={})
+    alerts = []
+    monkeypatch.setattr(cnp, "dispatch_event",
+                        lambda cfg, ctx, title, desp: alerts.append(title) or types.SimpleNamespace(ok=True, last_error=None))
+
+    class _Post:
+        def __init__(self, pid, ts, title):
+            self.post_id = pid
+            self.published_at = ts
+            self.cover = ""
+            self.url = f"https://v.m.chenzhongtech.com/fw/photo/{pid}"
+            self.title = title
+            self.author = "Nizi981116"
+            self.extra = {"type": "视频"}
+
+    class _PostAdapter:
+        def __init__(self, credentials=None):
+            pass
+
+        def fetch_new_posts(self, rid, baseline=None, context=None):
+            return [_Post("abc123", 1786090857, "最新作品A"), _Post("def456", 1786000000, "旧作B")]
+
+    monkeypatch.setattr(kmod, "KuaishouAdapter", _PostAdapter)
+    monkeypatch.setattr(kmod, "resolve_kuaishou_identity", lambda *a, **k: None)
+    monkeypatch.setattr(kmod, "apply_identity_to_config", lambda *a, **k: None)
+    monkeypatch.setattr(kmod, "apply_identity_to_tracking", lambda *a, **k: None)
+
+    cfg = json.loads('{"push":{"type":"bark","url":"https://api.day.app/K"}}')
+    entry = {"id": "Nizi981116", "name": "Nizi981116", "platform": "kuaishou"}
+    tracking = {}
+
+    cnp.handle_kuaishou_posts(entry, tracking, cfg, {}, "2026-08-14 00:00:00", context=object())
+
+    t = tracking["kuaishou_Nizi981116"]
+    assert t["latest_post_id"] == "abc123"   # 基线取最新
+    # 首轮推送当前最新一条（添加后立即可见，无需等下一部新作）
+    assert len(alerts) == 1
+    assert "已开始监控" in alerts[0]

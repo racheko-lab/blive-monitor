@@ -650,6 +650,9 @@ class KuaishouAdapter(PlatformAdapter):
                 "疑似退化列表（地域/风控差异），基线保持不变",
                 rid, prev_id, _ts_to_bj(prev_ts), new_id, _ts_to_bj(new_ts),
             )
+            # 标记本轮退化，供 check_new_posts 触发「静默漏检」告警（§4.4）。
+            # 否则 handle_kuaishou_posts 只会看到「无新作」而静默放过。
+            t["degraded_this_round"] = True
             self._write_run_tracking(t, rid, success=True)
             return []
 

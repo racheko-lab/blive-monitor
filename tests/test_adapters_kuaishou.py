@@ -569,6 +569,8 @@ def test_kuaishou_退化列表不能把基线打回旧帖():
     assert t["latest_timestamp"] == 1786090857
     assert t["latest_published_at"] == "2026-08-07 16:20:57"
     assert t.get("last_success")                    # 本轮抓取本身是成功的
+    # §4.4：退化轮需显式打标，否则 check_new_posts 只会看到「无新作」而静默放过
+    assert t.get("degraded_this_round") is True
 
 
 def test_kuaishou_首轮建基线不受回退保护影响():

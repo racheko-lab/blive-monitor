@@ -784,6 +784,54 @@ def order_rooms_baseline_first(post_rooms: List[Dict[str, Any]],
     return sorted(post_rooms, key=_key)
 
 
+#: 快手账号连续被风控 / 返回退化列达到该轮次后，主动推送一次告警（§4.4 防静默漏检）。
+#: 作品检测每 15 分钟一轮，阈值 2 ≈ 连续 30 分钟退化才告警，规避单次风控预热失败的误报。
+KUAISHOU_GATED_ALERT_THRESHOLD = 2
+
+
+def _maybe_alert_kuaishou_gated(name: str, rid: str, streak: int,
+                                 cfg_all: Dict[str, Any], entry: Dict[str, Any],
+                                 now_str: str) -> None:
+    """快手账号连续被风控 / 返回退化列表时，主动推送一次告警（§4.4 防静默漏检）。
+
+    现有 ``cookie_warn`` 事件只写 history.json（节流），**不会推送**，所以用户永远
+    不知道 Nizi981116 这类账号因出口地域 / 风控拿不到最新作品。本函数经现有推送通道
+    发一条可执行提醒（含出口代理 / cookie 两种对策），靠 notify_dedup 6 小时冷却防刷屏；
+    未配推送渠道时仅落 history（调用方已写 cookie_warn 事件）。
+    """
+    dkey = f"kuaishou_gated:{rid}"
+    cooldown = 6 * 3600
+    if not dedup_should_notify(dkey, cooldown=cooldown):
+        return
+    ctx = {
+        "platform": "kuaishou",
+        "tag": (entry.get("tags") or [None])[0] if entry.get("tags") else None,
+        "event": "cookie_warn",
+    }
+    title = f"⚠️ 快手账号「{name}」持续被风控"
+    desp = (
+        f"## ⚠️ 快手账号「{name}」持续被风控 / 返回退化列表\n\n"
+        f"已连续 **{streak}** 轮未取到完整作品列表，新作品可能**静默漏检**。\n\n"
+        f"**常见原因与对策：**\n\n"
+        f"- **出口地域差异**：CI（海外）比大陆少返回最新作品（Nizi981116 实证）→ "
+        f"在 `BLIVE_CONFIG` 配置大陆出口代理 `BROWSER_PROXY`（GitHub Secret）。\n"
+        f"- **cookie 过期 / 被风控** → 在 `BLIVE_CONFIG.platforms.kuaishou.credentials` 更新 cookie。\n\n"
+        f"---\n检测时间: {now_str}"
+    )
+    try:
+        res = dispatch_event(cfg_all, ctx, title, desp)
+        if res is not None and res.ok:
+            dedup_record(dkey)
+        elif res is not None and res.last_error == "config: empty push_cfg":
+            # 未配推送渠道：记一次冷却，避免每轮刷错误日志；配好后冷却到期会重触发
+            dedup_record(dkey)
+        else:
+            logger.error("快手风控告警推送失败: %s",
+                         (res.last_error if res else "无响应")[:200])
+    except Exception as e:  # noqa: BLE001
+        logger.error("快手风控告警异常: %s", e)
+
+
 def handle_kuaishou_posts(entry: Dict[str, Any], tracking: Dict[str, Dict[str, Any]],
                           cfg_all: Dict[str, Any], silence_cfg: Dict[str, Any],
                           now_str: str, context: Any = None,
@@ -820,6 +868,7 @@ def handle_kuaishou_posts(entry: Dict[str, Any], tracking: Dict[str, Dict[str, A
 
     key = f"kuaishou_{rid}"
     t = dict(tracking.get(key, {}))          # 拷贝，避免未提交前污染共享引用
+    t["degraded_this_round"] = False        # 每轮重置；adapter 在「基线防回退」时置 True
     had_baseline = bool(t.get("latest_post_id"))
 
     # 任务五/六：Resolve Identity → principalId。身份解析放在读取 tracking 之后，
@@ -853,7 +902,10 @@ def handle_kuaishou_posts(entry: Dict[str, Any], tracking: Dict[str, Dict[str, A
                      detail=f"快手匿名通道被风控（{g.detail}）。默认无需 cookie；"
                             f"若个别账号持续被挡，可在 BLIVE_CONFIG.platforms.kuaishou.credentials.cookie 选择性注入 cookie 增强",
                      now=bjnow())
+        t["gated_streak"] = int(t.get("gated_streak") or 0) + 1
         tracking[key] = t
+        if t["gated_streak"] >= KUAISHOU_GATED_ALERT_THRESHOLD:
+            _maybe_alert_kuaishou_gated(name, rid, t["gated_streak"], cfg_all, entry, now_str)
         return True, True
     except Exception as e:
         logger.error("  [%s] 快手新作获取异常: %s", name, e)
@@ -869,6 +921,16 @@ def handle_kuaishou_posts(entry: Dict[str, Any], tracking: Dict[str, Dict[str, A
                      detail=(f"已建立基线（最新作品 {t.get('latest_published_at') or '?'}），"
                              f"监控已生效，该账号再发布新作品时将推送通知"),
                      now=bjnow())
+
+    # 退化检测（§4.4）：本轮被风控 / 基线防回退（地域或风控导致列表不完整）→ 可能静默漏检。
+    # gated_streak 累计「连续退化」轮次，达到阈值主动推送一次告警（见 _maybe_alert_kuaishou_gated）。
+    degraded = bool(t.get("degraded_this_round"))
+    if degraded:
+        t["gated_streak"] = int(t.get("gated_streak") or 0) + 1
+    else:
+        t["gated_streak"] = 0
+    if degraded and t["gated_streak"] >= KUAISHOU_GATED_ALERT_THRESHOLD:
+        _maybe_alert_kuaishou_gated(name, rid, t["gated_streak"], cfg_all, entry, now_str)
 
     if not posts:
         # 无新作（或风控返回空），基线已在 adapter 内更新（若有变化），落盘即可
@@ -892,9 +954,39 @@ def handle_kuaishou_posts(entry: Dict[str, Any], tracking: Dict[str, Dict[str, A
         name = latest.author
         entry["name"] = name
 
-    # 首次抓取：仅建基线不推送，避免历史作品刷屏
+    # 首次抓取：建基线，并把「当前最新一条」推给用户，让其添加后立即看到，
+    # 而非干等下一部未来新作。仅推一条最新（走 dedup），不刷屏历史作品。
     if not had_baseline:
-        logger.info("  [%s] 快手首次抓取，建立基线（%d 个历史作品，不推送）", name, len(posts))
+        dkey = latest.extra.get("dedup_key") or f"post:kuaishou:{latest.post_id}"
+        logger.info("  [%s] 快手首次抓取，建立基线（%d 个历史作品），推送当前最新一条", name, len(posts))
+        if dedup_should_notify(dkey, cooldown=float("inf")):
+            kind = latest.extra.get("type") or "视频"
+            link = latest.url or f"https://v.m.chenzhongtech.com/fw/photo/{latest.post_id}"
+            title = f"🆕 {name} 已开始监控（最新作品）"
+            desp = (
+                f"## 🆕 {name} 已开始监控\n\n"
+                f"**平台**: 快手\n\n"
+                f"**类型**: {kind}\n\n"
+                f"**描述**: {latest.title or '[无描述]'}\n\n"
+                f"👉 [查看作品]({link})\n\n"
+                f"---\n检测时间: {now_str}"
+            )
+            ctx = {
+                "platform": "kuaishou",
+                "tag": (entry.get("tags") or [None])[0] if entry.get("tags") else None,
+                "event": "new_post",
+            }
+            pcfg = channel_to_push_cfg(common.resolve_channel(cfg_all, ctx))
+            channel = (pcfg.get("type") or "unknown").lower()
+            res = dispatch_event(cfg_all, ctx, title, desp)
+            logger.info("    → 首次基线作品推送%s", "成功" if res.ok else "失败")
+            if res.ok:
+                dedup_record(dkey)
+            elif res.last_error == "config: empty push_cfg":
+                pass
+            else:
+                last_err = (res.last_error or "未知错误")[:200]
+                logger.error("首次基线作品推送失败 channel=%s: %s", channel, last_err)
         tracking[key] = t
         return True, False
 
@@ -1201,6 +1293,16 @@ def main() -> None:
                     dedup_key = post_dkey
                 elif candidate:
                     logger.info("  [%s] 去重跳过：作品 %s 已推送过，不重复", name, aweme["aweme_id"])
+                # 首次监控（无基线）：把当前最新作品推一条，让用户添加后立即看到，
+                # 而非干等下一部未来新作。仅推「一条最新」且走 dedup，不会刷屏历史作品。
+                if not prev_id and dedup_should_notify(post_dkey, cooldown=float("inf")):
+                    notify = True
+                    dedup_key = post_dkey
+                    append_event(
+                        rid, name, "douyin", "new_post",
+                        detail="首次监控基线作品：" + f"{desc}  {aweme.get('video_url', '')}".strip(),
+                        now=bjnow(),
+                    )
                 # 真实封面回填：api 模式拿到真实作品即写入（即使基线未变也刷新，
                 # 让所有已监控账号在下次 CI 尽快显示真实封面，而非一直占位）
                 if aweme.get("cover"):
