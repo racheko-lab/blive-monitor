@@ -17,9 +17,19 @@ on:
       - rooms.json
       - post_rooms.json
 
-# 串行执行，避免并发 run 互相覆盖状态 / 提交冲突导致重复推送
+# 串行执行，避免并发 run 互相覆盖状态 / 提交冲突导致重复推送。
+#
+# cancel-in-progress: false 是刻意的，不要改成 true：抓取一轮要 4~5 分钟，而 schedule
+# 每 5 分钟一次；一旦允许新 run 取消旧 run，每轮都会把上一轮拦腰打断，永远跑不完整。
+#
+# group 名 2026-08-28 由 live-check 改为 live-check-v2：
+# 自托管 runner 离线期间（见 jobs.check.runs-on 注释），大量 schedule run 排队等待
+# self-hosted runner 而永不完成；同组 FIFO + cancel-in-progress:false 意味着新 run 会
+# 被这些「僵尸 run」堵在队尾（head-of-line blocking）——即便把 runner 改回 macos-latest，
+# 新 run 依然轮不到（实测 47 分钟未执行）。换 group 名等价于换一条空队列，让新 run 立即执行。
+# 旧僵尸 run 留在 live-check 组，由 GitHub 在排队超时后自动取消，不影响新队列。
 concurrency:
-  group: live-check
+  group: live-check-v2
   cancel-in-progress: false
 
 permissions:
