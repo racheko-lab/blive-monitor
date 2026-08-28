@@ -18,22 +18,26 @@
     "platform": "kuaishou",
     "id": "Sandy88888",
     "name": "Sandy88888",
-    "principal_id": "3xrgxqkqp829xz6"
+    "principal_id": "3xrgxqkqp829xz6",
+    "enabled": false
   },
   {
     "platform": "kuaishou",
     "id": "wadaxiwachangmingran",
-    "name": "wadaxiwachangmingran"
+    "name": "wadaxiwachangmingran",
+    "enabled": false
   },
   {
     "platform": "kuaishou",
     "id": "wikw-0403-",
-    "name": "wikw-0403-"
+    "name": "wikw-0403-",
+    "enabled": false
   },
   {
     "platform": "kuaishou",
     "id": "HUizi-G-H",
-    "name": "HUizi-G-H"
+    "name": "HUizi-G-H",
+    "enabled": false
   },
   {
     "platform": "douyin",
@@ -50,7 +54,8 @@
   {
     "platform": "kuaishou",
     "id": "ii050824",
-    "name": "ii050824"
+    "name": "ii050824",
+    "enabled": false
   },
   {
     "platform": "douyin",

@@ -78,22 +78,26 @@
     "platform": "kuaishou",
     "id": "Sandy88888",
     "name": "肥阿肥",
-    "avatar": "https://p2-pro.a.yximgs.com/uhead/AB/2019/06/09/11/BMjAxOTA2MDkxMTM3MzBfMjExNzU1MF8xX2hkODI1XzQ5Mw==_s.jpg"
+    "avatar": "https://p2-pro.a.yximgs.com/uhead/AB/2019/06/09/11/BMjAxOTA2MDkxMTM3MzBfMjExNzU1MF8xX2hkODI1XzQ5Mw==_s.jpg",
+    "enabled": false
   },
   {
     "platform": "kuaishou",
     "id": "Nizi981116",
-    "name": "住在峡谷的少女"
+    "name": "住在峡谷的少女",
+    "enabled": false
   },
   {
     "platform": "kuaishou",
     "id": "wadaxiwachangmingran",
-    "name": "wadaxiwachangmingran"
+    "name": "wadaxiwachangmingran",
+    "enabled": false
   },
   {
     "platform": "kuaishou",
     "id": "HUizi-G-H",
-    "name": "HUizi-G-H"
+    "name": "HUizi-G-H",
+    "enabled": false
   },
   {
     "platform": "douyin",
@@ -113,7 +117,8 @@
   {
     "platform": "kuaishou",
     "id": "ii050824",
-    "name": "ii050824"
+    "name": "ii050824",
+    "enabled": false
   },
   {
     "platform": "douyin",
