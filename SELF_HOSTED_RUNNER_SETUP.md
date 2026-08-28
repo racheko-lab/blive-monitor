@@ -88,13 +88,23 @@ Windows（以管理员身份运行 PowerShell）：
 
 ### 第 6 步：切换 Workflow 到自托管 Runner
 
-1. 打开 https://github.com/racheko-lab/blive-monitor/settings/variables/actions
-2. 点击 **New repository variable**
-3. Name 填：`RUNNER_LABEL`
-4. Value 填：`self-hosted`
-5. 点击 **Add variable**
+> ⚠️ **2026-08-28 起已改版**：不再使用 `RUNNER_LABEL` 仓库变量，改为直接改 workflow。原因见文末「常见问题」。
+
+1. 先确认 runner **在线**（本机终端里能看到 `Listening for Jobs`）
+2. 编辑 `.github/workflows/check.yml`，把 `check` 作业的 runner 改成自托管：
+
+   ```yaml
+   jobs:
+     check:
+       runs-on: self-hosted   # 原来是 macos-latest
+   ```
+
+3. 提交并推送到 master
 
 完成！下一次定时检测（每 5 分钟）就会自动在你的电脑上运行，快手作品监控将从你的住宅 IP 直连，拿全量数据。
+
+> ⚠️ **务必在 runner 在线时再切**。若电脑关机状态下切成自托管，`check` 作业会无限 Queued，
+> `deploy`（`needs: check`）永不执行 → 版本角标不刷新、状态停更，且**失败完全静默**。
 
 ---
 
@@ -115,7 +125,14 @@ Windows（以管理员身份运行 PowerShell）：
 A: 关机期间检测暂停，开机后 runner 自动重连，下一轮检测恢复。不会丢数据。
 
 **Q: 可以随时切回 GitHub 托管 runner 吗？**
-A: 可以。删除 `RUNNER_LABEL` 变量即可切回 macOS runner（会走中国 CDN 降级模式）。
+A: 可以。把 `.github/workflows/check.yml` 里 `jobs.check.runs-on` 改回 `macos-latest` 并提交即可
+（会走中国 CDN 降级模式）。
+
+**Q: 为什么不用 `RUNNER_LABEL` 仓库变量了？**
+A: 2026-08-28 事故：变量被设为 `self-hosted`，而 runner 所在电脑离线 → `check` 作业无限 Queued →
+`deploy`（`needs: check`）永不执行 → 前端版本号不刷新、`status.json` 停更超 24 小时，且无人收到告警。
+根因是「默认可用、自托管需改代码」被反转成了「默认依赖一台可能关机的电脑」。改回静态写死后，
+电脑关机只会让快手走降级模式，不会让整条监控停摆。
 
 **Q: runner 安全吗？**
 A: runner 只运行你自己仓库的 workflow，不会执行第三方代码。token 只用于注册，不存储密码。

@@ -30,11 +30,17 @@ permissions:
 
 jobs:
   check:
-    # Runner 选择：通过仓库变量 RUNNER_LABEL 控制（Settings → Secrets and variables → Actions → Variables）。
-    # - 不设置（默认）：macos-latest（GitHub 托管，快手云 IP 被封时自动降级到中国 CDN）
-    # - 设为 "self-hosted"：自托管 runner（用户电脑/服务器，住宅 IP 直连快手，拿全量数据）
-    # - 设为 "self-hosted,linux"：指定 Linux 自托管 runner
-    runs-on: ${{ vars.RUNNER_LABEL || 'macos-latest' }}
+    # Runner 选择：默认 GitHub 托管的 macos-latest。
+    #
+    # 为什么不再用 ${{ vars.RUNNER_LABEL || 'macos-latest' }}（2026-08-28 事故）：
+    # 一旦把 RUNNER_LABEL 设为 self-hosted 而 runner 所在电脑离线，本作业会**无限 Queued**，
+    # deploy（needs: check）永不执行 → 前端版本号不刷新、status.json 停更，且失败完全静默
+    # （实测停更 >24 小时无人知晓）。静态写死可杜绝「一台关机的电脑拖死整条流水线」。
+    #
+    # 改用自托管（住宅 IP 直连快手、拿全量数据，见 SELF_HOSTED_RUNNER_SETUP.md）：
+    #   把下行改成  runs-on: self-hosted  并确保 runner 在线；或用
+    #   runs-on: [self-hosted, linux] 指定标签。改回来同理。
+    runs-on: macos-latest
     timeout-minutes: 30
     # 作品监控总开关：设为 "true" 启用；列表（post_rooms.json）为空时整段跳过，不浪费资源
     env:
