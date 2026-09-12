@@ -29,10 +29,11 @@
     "last_duration": "1h10min"
   },
   "douyin_woshixiaoqumt": {
-    "last_live": "",
-    "live_start": "2026-09-12 16:00:58",
+    "last_live": "2026-09-12 16:00:58",
+    "live_start": "",
     "sec_uid": "MS4wLjABAAAAiAfQD9C7HmqM8S8cyZMOFy0jUEpiFQ5Vtr0VyWYzG7w",
-    "live_duration": "14min"
+    "live_duration": "14min",
+    "last_duration": "19min"
   },
   "douyin_hmh1020l.": {
     "last_live": "",
