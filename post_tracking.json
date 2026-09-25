@@ -22,12 +22,32 @@
         "ts": 1656224016
       },
       {
+        "id": "3x2i4bvgg89mi7g",
+        "ts": 1785750950
+      },
+      {
+        "id": "3x4bhvqnsrw72m6",
+        "ts": 1784191865
+      },
+      {
         "id": "3x3php8fcyjvake",
         "ts": 1782555776
       },
       {
         "id": "3x7wjeva8xhxjqc",
         "ts": 1782379448
+      },
+      {
+        "id": "3xbhsa5886tfits",
+        "ts": 1781861125
+      },
+      {
+        "id": "3xymre2yycepfu4",
+        "ts": 1781707813
+      },
+      {
+        "id": "3xnhhivw8jmwqbe",
+        "ts": 1780651172
       },
       {
         "id": "3xg3y6agqr8jcci",
@@ -48,26 +68,6 @@
       {
         "id": "3xn9fc738e3pny4",
         "ts": 1777292336
-      },
-      {
-        "id": "3xyncs6cbzevr2s",
-        "ts": 1777112482
-      },
-      {
-        "id": "3xq47i2pudv6599",
-        "ts": 1775467489
-      },
-      {
-        "id": "3xz5pwhqc299nti",
-        "ts": 1775381558
-      },
-      {
-        "id": "3xynv5vhdpa5ydm",
-        "ts": 1775295748
-      },
-      {
-        "id": "3xd3nramk7he9f4",
-        "ts": 1774948296
       }
     ],
     "latest_post_id": "3x2i4bvgg89mi7g",
@@ -78,8 +78,8 @@
     "latest_type": "视频",
     "avatar": "https://p22.a.yximgs.com/uhead/AB/2022/10/01/15/BMjAyMjEwMDExNTM5NTdfODUzOTUxODcyXzFfaGQ2NjhfNzQ0_s.jpg",
     "latest_desc": "比起天晴 我更需要你#天气之子 #阳菜 #新海城 #ooc致歉",
-    "last_success": "2026-09-26 07:53:42",
-    "degraded_this_round": true,
-    "gated_streak": 1
+    "last_success": "2026-08-14 01:04:21",
+    "degraded_this_round": false,
+    "gated_streak": 49
   }
 }
