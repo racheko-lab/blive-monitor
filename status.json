@@ -1,17 +1,17 @@
 {
-  "updated": "2026-09-26 18:25:45",
+  "updated": "2026-09-26 18:35:52",
   "rooms": [
     {
       "platform": "douyin",
       "id": "bunnnny0922",
-      "name": "特务兔（三角洲行动）",
-      "status": "offline",
-      "title": "S113x3已严肃完成！",
+      "name": "兔兔",
+      "status": "error",
+      "title": "获取失败: The read operation timed out",
       "online": 0,
       "area": "",
-      "time": "2026-09-26 18:25:46",
-      "sec_uid": "MS4wLjABAAAAWUtB3-CvE-LJGv_Vu90Qq0DTbUH_WUI7TTiv0xb40l-dhVKxtRg8mK0WB9fl2MSj",
-      "avatar": "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_fc1b6dd263b6908622ed3169914a5bd6.jpeg?from=3067671334",
+      "time": "2026-09-26 18:35:52",
+      "sec_uid": "",
+      "avatar": "",
       "last_live": "2026-09-24 20:01:02",
       "live_duration": ""
     }
