@@ -1,17 +1,17 @@
 {
-  "updated": "2026-09-27 01:52:49",
+  "updated": "2026-09-27 01:57:19",
   "rooms": [
     {
       "platform": "douyin",
       "id": "bunnnny0922",
-      "name": "兔兔",
-      "status": "error",
-      "title": "获取失败: <urlopen error _ssl.c:993: The handshake operation timed out>",
+      "name": "特务兔（三角洲行动）",
+      "status": "offline",
+      "title": "S113x3已严肃完成！",
       "online": 0,
       "area": "",
-      "time": "2026-09-27 01:52:49",
-      "sec_uid": "",
-      "avatar": "",
+      "time": "2026-09-27 01:57:19",
+      "sec_uid": "MS4wLjABAAAAWUtB3-CvE-LJGv_Vu90Qq0DTbUH_WUI7TTiv0xb40l-dhVKxtRg8mK0WB9fl2MSj",
+      "avatar": "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_fc1b6dd263b6908622ed3169914a5bd6.jpeg?from=3067671334",
       "last_live": "2026-09-24 20:01:02",
       "live_duration": ""
     }
