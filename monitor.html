@@ -3759,10 +3759,35 @@ function ghGetFile(path, fresh){
   if(fresh) url+='&_t='+Date.now();
   return ghFetch(url, {method:'GET', headers:ghHeaders()})
     .then(function(res){
-      if(res.status===404) return {rooms:[], sha:null};
+      /* ── 2026-09-30 账号整体丢失事故的根因修复 ──────────────────────────
+         原实现为：
+             if(res.status===404) return {rooms:[], sha:null};
+             var rooms = content ? JSON.parse(...) : [];
+         即「读不到就当空列表」。但 rooms.json / post_rooms.json 是仓库常驻文件，
+         404 或空 content 只可能是 Token 失效、路径异常或 API 返回被截断。
+         静默当成空列表后，紧随其后的「添加账号」会以空列表为基底写回，
+         把整份清单覆盖成只剩刚添加的那一条 —— 25+12 个账号就是这样丢掉的。
+
+         因此改为：非常态一律抛错中止写入，绝不以空列表冒充读取成功。
+         函数名、签名 (path, fresh)、返回形状 {rooms, sha} 均保持不变。 */
+      if(res.status===404){
+        throw new Error('读取失败（HTTP 404）：'+path+' 不存在，或 Token 无访问权限。'
+          + '为避免覆盖账号清单，已中止本次写入。');
+      }
       if(!res.ok) throw new Error('读取失败（HTTP '+res.status+(res.data&&res.data.message?': '+res.data.message:'')+'）');
       var content=res.data&&res.data.content?res.data.content.replace(/\s/g,''):'';
-      var rooms=content?JSON.parse(b64decUtf8(content)):[];
+      if(!content){
+        throw new Error('读取失败：'+path+' 返回内容为空（API 异常或响应被截断）。'
+          + '为避免覆盖账号清单，已中止本次写入。');
+      }
+      var rooms;
+      try{ rooms=JSON.parse(b64decUtf8(content)); }
+      catch(err){
+        throw new Error('读取失败：'+path+' 内容不是合法 JSON。为避免覆盖账号清单，已中止本次写入。');
+      }
+      if(!Array.isArray(rooms)){
+        throw new Error('读取失败：'+path+' 内容不是数组。为避免覆盖账号清单，已中止本次写入。');
+      }
       return {rooms:rooms, sha:res.data&&res.data.sha?res.data.sha:null};
     });
 }

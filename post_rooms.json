@@ -1,8 +1,78 @@
 [
   {
+    "id": "32062056217",
+    "name": "Sayonal_",
+    "sec_uid": "MS4wLjABAAAASbtZpohJd3E4CMctcy5mTwdLJYq1wQt27I5muIshIxlT11i88tVEyQgMs34lIlDO"
+  },
+  {
+    "id": "70782856945",
+    "name": "米多多",
+    "sec_uid": "MS4wLjABAAAAXWPkodA6DTIsuuegT8zdKRrPnFVVebMe0G1ist71jDtOKzEhGsB5VeHLA5uWu4IK"
+  },
+  {
+    "id": "MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI",
+    "name": "开心愛酱壹佰E",
+    "sec_uid": "MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI"
+  },
+  {
+    "platform": "kuaishou",
+    "id": "Sandy88888",
+    "name": "Sandy88888",
+    "principal_id": "3xrgxqkqp829xz6",
+    "enabled": false
+  },
+  {
+    "platform": "kuaishou",
+    "id": "wadaxiwachangmingran",
+    "name": "wadaxiwachangmingran",
+    "enabled": false
+  },
+  {
     "platform": "kuaishou",
     "id": "wikw-0403-",
     "name": "wikw-0403-",
     "enabled": false
+  },
+  {
+    "platform": "kuaishou",
+    "id": "HUizi-G-H",
+    "name": "HUizi-G-H",
+    "enabled": false
+  },
+  {
+    "platform": "douyin",
+    "id": "L88_____",
+    "name": "L88_____",
+    "sec_uid": "MS4wLjABAAAAIUjkPI5wnLh04rbUG43D8ZKsqAuWxbihVIJ5mnWVDrc"
+  },
+  {
+    "platform": "douyin",
+    "id": "wenying0421",
+    "name": "wenying0421",
+    "sec_uid": "MS4wLjABAAAA12uSTzQuBsLhr1A_bMsgPODP8h4VWkwgr3bCzdfcRagpAXHbljnnWEFtcE0I_x-J"
+  },
+  {
+    "platform": "kuaishou",
+    "id": "ii050824",
+    "name": "ii050824",
+    "enabled": false
+  },
+  {
+    "platform": "douyin",
+    "id": "hanyitongshiwoya",
+    "name": "hanyitongshiwoya",
+    "sec_uid": "MS4wLjABAAAAZ5AsYinQNfJdUSkxT6UB4Wfc3SEn_KeKMc1iVjVoDhZ-2kf3o8svKNjtSlfWchb-"
+  },
+  {
+    "platform": "douyin",
+    "id": "83084203909",
+    "name": "83084203909",
+    "sec_uid": "MS4wLjABAAAA3l4twfSK5f6bKfAFjPKY1oTs3Z4057AZjateJFQRy_0rDDh-aWtNx8Sjip_olrGB"
+  },
+  {
+    "platform": "douyin",
+    "id": "88572108453",
+    "name": "88572108453",
+    "sec_uid": "MS4wLjABAAAA90170izTB10-ZfDiYPLXnib5CBXCxH6_MFaJgTNUR84E7P4b5os3SUQqESO2lymK"
   }
 ]
