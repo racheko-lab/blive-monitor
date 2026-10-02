@@ -97,11 +97,6 @@
     "live_start": "",
     "sec_uid": "MS4wLjABAAAAZ5AsYinQNfJdUSkxT6UB4Wfc3SEn_KeKMc1iVjVoDhZ-2kf3o8svKNjtSlfWchb-"
   },
-  "douyin_83084203909": {
-    "last_live": "",
-    "live_start": "",
-    "sec_uid": "MS4wLjABAAAA3l4twfSK5f6bKfAFjPKY1oTs3Z4057AZjateJFQRy_0rDDh-aWtNx8Sjip_olrGB"
-  },
   "douyin_88572108453": {
     "last_live": "",
     "live_start": "",
@@ -125,6 +120,6 @@
   "douyu_796449": {
     "last_live": "",
     "live_start": "2026-10-02 22:49:10",
-    "live_duration": "2h55min"
+    "live_duration": "3h0min"
   }
 }
