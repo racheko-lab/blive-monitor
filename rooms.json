@@ -154,5 +154,10 @@
     "platform": "douyin",
     "id": "cm6229",
     "name": "cm6229"
+  },
+  {
+    "platform": "douyu",
+    "id": "1236229",
+    "name": "1236229"
   }
 ]
