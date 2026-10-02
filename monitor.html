@@ -168,6 +168,8 @@
   --color-douyin-bg: var(--douyin-bg);
   --color-kuaishou: #FF6600;
   --color-kuaishou-bg: rgba(255,102,0,0.1);
+  --color-douyu: #FF5D1F;
+  --color-douyu-bg: rgba(255,93,31,0.12);
 
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.25);
@@ -1113,6 +1115,8 @@ body.batch-mode .blm-work-select-wrap {
 .blm-room-avatar.ava-bili { background: linear-gradient(135deg, #00C3F0, #0088C9); }
 .blm-room-avatar.ava-douyin { background: linear-gradient(135deg, #FF2D55, #25F4EE); }
 .blm-room-avatar.ava-kuaishou { background: linear-gradient(135deg, #FF6600, #FF9500); }
+/* 斗鱼官方橙 #FF5D1F 与快手 #FF6600 太近，渐变收尾压向红，保证一眼可分 */
+.blm-room-avatar.ava-douyu { background: linear-gradient(135deg, #FF5D1F, #E53935); }
 .blm-room-avatar.ava-def { background: linear-gradient(135deg, #7B6FE8, #5B4FC9); color: #fff; }
 
 .blm-room-avatar-link {
@@ -1437,6 +1441,7 @@ body.batch-mode .blm-room-actions { opacity: 1; }
 }
 .blm-work-platform-tag.douyin { color: #ff8a70; }
 .blm-work-platform-tag.kuaishou { color: #FF6600; }
+.blm-work-platform-tag.douyu { color: #FF5D1F; }
 
 .blm-work-info {
   padding: var(--space-2) var(--space-3) var(--space-3);
@@ -2452,6 +2457,7 @@ body.batch-mode .blm-work-card {
               <option value="douyin">抖音</option>
               <option value="bilibili">B站</option>
               <option value="kuaishou">快手</option>
+              <option value="douyu">斗鱼</option>
             </select>
             <input id="addId" class="blm-input" placeholder="抖音号 / 直播间号（必填）" inputmode="text" autocomplete="off">
             <input id="addName" class="blm-input" placeholder="名称（可选）" autocomplete="off">
@@ -2573,6 +2579,7 @@ body.batch-mode .blm-work-card {
             <button class="blm-filter-chip lchip" data-pf="bilibili" onclick="onLogPlatform('bilibili')">哔哩哔哩</button>
             <button class="blm-filter-chip lchip" data-pf="douyin" onclick="onLogPlatform('douyin')">抖音</button>
             <button class="blm-filter-chip lchip" data-pf="kuaishou" onclick="onLogPlatform('kuaishou')">快手</button>
+            <button class="blm-filter-chip lchip" data-pf="douyu" onclick="onLogPlatform('douyu')">斗鱼</button>
             <span class="blm-count-text" id="logCount" style="margin-left:auto"></span>
           </div>
           <div class="blm-log-row">
@@ -3031,11 +3038,12 @@ function roomAvatar(r, s){
   var name = (r && r.name) ? r.name : ((r && r.platform === 'bilibili') ? 'B' : ((r && r.platform === 'douyin') ? '抖' : '?'));
   var ch = (name || '?').replace(/\s+/g, '').charAt(0) || '?';
   var url = ((s && s.avatar) ? s.avatar : ((r && r.avatar) ? r.avatar : ''));
-  var cls = (r && r.platform === 'bilibili') ? 'ava-bili' : ((r && r.platform === 'douyin') ? 'ava-douyin' : ((r && r.platform === 'kuaishou') ? 'ava-kuaishou' : 'ava-def'));
+  var cls = (r && r.platform === 'bilibili') ? 'ava-bili' : ((r && r.platform === 'douyin') ? 'ava-douyin' : ((r && r.platform === 'kuaishou') ? 'ava-kuaishou' : ((r && r.platform === 'douyu') ? 'ava-douyu' : 'ava-def')));
   var img = url ? '<img src="' + e(url) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">' : '';
   var u = (r && r.platform === 'bilibili') ? 'https://live.bilibili.com/'+r.id
         : (r && r.platform === 'douyin') ? 'https://live.douyin.com/'+r.id
-        : (r && r.platform === 'kuaishou') ? 'https://live.kuaishou.com/u/'+r.id : '#';
+        : (r && r.platform === 'kuaishou') ? 'https://live.kuaishou.com/u/'+r.id
+        : (r && r.platform === 'douyu') ? 'https://www.douyu.com/'+r.id : '#';
   var inner = '<span class="blm-room-avatar ' + cls + '" aria-hidden="true">' + img + e(ch) + '</span>';
   return (u !== '#')
     ? '<a class="blm-room-avatar-link" href="'+u+'" target="_blank" title="进入直播间">'+inner+'</a>'
@@ -3097,9 +3105,9 @@ function renderLive(){
       stxt={live:'直播中',replay:'回放中',offline:'未开播',error:'检测失败'}[st]||'未开播';
       sp={live:'<span class="pulse"></span>',replay:'',offline:'',error:''}[st]||'';
     }
-    var pl=r.platform==='bilibili'?'bilibili':(r.platform==='douyin'?'douyin':(r.platform==='kuaishou'?'kuaishou':''));
-    var pln=r.platform==='bilibili'?'B站':(r.platform==='douyin'?'抖音':(r.platform==='kuaishou'?'快手':''));
-    var u=r.platform==='bilibili'?'https://live.bilibili.com/'+r.id:r.platform==='douyin'?'https://live.douyin.com/'+r.id:r.platform==='kuaishou'?'https://live.kuaishou.com/u/'+r.id:'#';
+    var pl=r.platform==='bilibili'?'bilibili':(r.platform==='douyin'?'douyin':(r.platform==='kuaishou'?'kuaishou':(r.platform==='douyu'?'douyu':'')));
+    var pln=r.platform==='bilibili'?'B站':(r.platform==='douyin'?'抖音':(r.platform==='kuaishou'?'快手':(r.platform==='douyu'?'斗鱼':'')));
+    var u=r.platform==='bilibili'?'https://live.bilibili.com/'+r.id:r.platform==='douyin'?'https://live.douyin.com/'+r.id:r.platform==='kuaishou'?'https://live.kuaishou.com/u/'+r.id:r.platform==='douyu'?'https://www.douyu.com/'+r.id:'#';
     var isLive = st==='live';
     var meta=[];
     if(s&&s.online)meta.push('人气 '+e(s.online));
@@ -4019,7 +4027,7 @@ function renderRoomDetail(key){
   var id = parts[1] || '';
   var room = window.__roomDetailRoom;
   var name = room ? (room.name || id) : id;
-  var platName = platform === 'bilibili' ? 'B站' : (platform === 'douyin' ? '抖音' : (platform === 'kuaishou' ? '快手' : '其他'));
+  var platName = platform === 'bilibili' ? 'B站' : (platform === 'douyin' ? '抖音' : (platform === 'kuaishou' ? '快手' : (platform === 'douyu' ? '斗鱼' : '其他')));
 
   var titleEl = document.getElementById('roomDetailTitle');
   if(titleEl) titleEl.textContent = name + ' · ' + platName;
@@ -4660,13 +4668,16 @@ function onAddPlatformChange(){
   }else if(p==='kuaishou'){
     inp.placeholder='快手号 / 用户 ID（必填）';
     inp.inputMode='text'; inp.setAttribute('inputmode','text');
+  }else if(p==='douyu'){
+    inp.placeholder='斗鱼房间号（纯数字，如 15000）';
+    inp.inputMode='numeric'; inp.setAttribute('inputmode','numeric');
   }else{
     inp.placeholder='直播间 ID（必填）';
     inp.inputMode='numeric'; inp.setAttribute('inputmode','numeric');
   }
-  /* B站无新作品监控：隐藏直播表单内的「同时添加新作品监控」按钮 */
+  /* B站/斗鱼无新作品监控：隐藏直播表单内的「同时添加新作品监控」按钮 */
   var bothBtn=document.getElementById('addBothBtn');
-  if(bothBtn) bothBtn.style.display = (p==='bilibili') ? 'none' : '';
+  if(bothBtn) bothBtn.style.display = (p==='bilibili' || p==='douyu') ? 'none' : '';
 }
 
 /** 新作品添加表单：平台切换时同步占位文案。 */
@@ -4687,8 +4698,9 @@ function submitAdd(){
   var platform=document.getElementById('addPlatform').value;
   var id=document.getElementById('addId').value.trim();
   var name=document.getElementById('addName').value.trim();
-  if(platform!=='bilibili' && platform!=='douyin' && platform!=='kuaishou'){ toast('平台不合法', false); return; }
+  if(platform!=='bilibili' && platform!=='douyin' && platform!=='kuaishou' && platform!=='douyu'){ toast('平台不合法', false); return; }
   if(!id){ toast('房间 ID 必填', false); return; }
+  if(platform==='douyu' && !/^\d+$/.test(id)){ toast('斗鱼房间号必须为纯数字', false); return; }
   // B2 分组标签（逗号分隔 → tags[]）
   var tagsRaw=document.getElementById('addTags').value.trim();
   var tags=tagsRaw? tagsRaw.split(',').map(function(s){return s.trim();}).filter(function(s){return s;}) : [];
@@ -5297,7 +5309,7 @@ function previewBatchBox(boxId, previewId){
   var res = parseBatchInput(box.value);
   var el = document.getElementById(previewId); if(!el) return;
   var html = '';
-  if(res.ok.length) html += '<div>✅ 待添加 ' + res.ok.length + ' 条：</div>' + res.ok.map(function(r){ return '<div class="blm-batch-item"><span class="blm-pf-tag">' + (r.platform==='bilibili'?'B站':(r.platform==='kuaishou'?'快手':'抖音')) + '</span> ' + e(r.id) + ' · ' + e(r.name) + '</div>'; }).join('');
+  if(res.ok.length) html += '<div>✅ 待添加 ' + res.ok.length + ' 条：</div>' + res.ok.map(function(r){ return '<div class="blm-batch-item"><span class="blm-pf-tag">' + (r.platform==='bilibili'?'B站':(r.platform==='kuaishou'?'快手':(r.platform==='douyu'?'斗鱼':'抖音'))) + '</span> ' + e(r.id) + ' · ' + e(r.name) + '</div>'; }).join('');
   if(res.bad.length) html += '<div class="blm-batch-bad">⚠️ 跳过 ' + res.bad.length + ' 行</div>' + res.bad.map(function(b){ return '<div class="blm-batch-item blm-batch-bad">' + e((b.raw||'').slice(0,60)) + ' — ' + e(b.reason) + '</div>'; }).join('');
   if(!html) html = '<div class="blm-batch-item">（空）</div>';
   el.innerHTML = html;

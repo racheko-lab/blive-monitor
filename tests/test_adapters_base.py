@@ -59,8 +59,25 @@ def test_registry_register_get_list():
 
 
 def test_registry_from_config_builtins():
+    """常驻平台 = bilibili / douyin / douyu。
+
+    bilibili/douyin 为既有平台，不依赖 config 段即可运行；
+    douyu 走开放平台免鉴权公开接口（无需凭证/Cookie），同样常驻——
+    rooms.json 里出现 douyu 房间即可直接跑，不必先在 config 里开户。
+    """
     reg = AdapterRegistry.from_config({})
-    assert set(reg.list_platforms()) == {"bilibili", "douyin"}
+    assert set(reg.list_platforms()) == {"bilibili", "douyin", "douyu"}
+
+
+def test_registry_builtin_douyu_is_anonymous():
+    """斗鱼常驻实例必须能匿名工作（无 credentials 也能取到房间态）。"""
+    reg = AdapterRegistry.from_config({})
+    ad = reg.get("douyu")
+    assert ad is not None
+    assert ad.platform == "douyu"
+    assert ad.supports_live is True
+    assert ad.supports_posts is False
+    assert not ad.credentials
 
 
 def test_registry_from_config_enabled_platforms():

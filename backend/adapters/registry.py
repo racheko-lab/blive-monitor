@@ -12,6 +12,7 @@ from typing import Any, Dict, Optional
 from backend.adapters.base import PlatformAdapter
 from backend.adapters.bilibili import BilibiliAdapter
 from backend.adapters.channels import ChannelsAdapter
+from backend.adapters.douyu import DouyuAdapter
 from backend.adapters.douyin import DouyinAdapter
 from backend.adapters.kuaishou import KuaishouAdapter
 from backend.adapters.taobao_live import TaobaoLiveAdapter
@@ -67,6 +68,9 @@ class AdapterRegistry:
         # 内置常驻（既有 bilibili/douyin 不依赖新增 config 段）
         reg.register(BilibiliAdapter())
         reg.register(DouyinAdapter())
+        # 斗鱼同理常驻：走开放平台免鉴权公开接口，无需凭证/Cookie，
+        # rooms.json 里出现 douyu 房间即可直接跑，不必先在 config 里开户。
+        reg.register(DouyuAdapter())
 
         platforms_cfg = (cfg_all.get("platforms") or {}) if isinstance(cfg_all, dict) else {}
         for code, pcfg in platforms_cfg.items():

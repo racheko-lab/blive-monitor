@@ -657,6 +657,48 @@ def fetch_kuaishou(web_rid: str, cfg_all: Optional[Dict[str, Any]] = None) -> Di
         }
 
 
+def fetch_douyu(rid: str) -> Dict[str, Any]:
+    """斗鱼直播间检测（开放平台免鉴权公开接口，匿名可用、无需 Cookie）。
+
+    数据源：``https://open.douyucdn.cn/api/RoomApi/room/{rid}``
+    映射 RoomModel → 统一 result dict（与 bili/douyin/kuaishou 形状一致）。
+
+    与快手一致：异常兜底为 ``status="error"`` 而非静默 offline——斗鱼接口对
+    「房间不存在 / 房间号非法」会显式报错（error=101 / HTTP 404），静默当 offline
+    会把失效房间伪装成「未开播」，既不污染历史也便于在看板上暴露。
+
+    Args:
+        rid: 斗鱼房间号（纯数字，如 ``15000``）。
+
+    Returns:
+        直播间状态字典 {status, title, online, area, avatar, nickname, time}。
+    """
+    now_str = bjnow().strftime("%Y-%m-%d %H:%M:%S")
+    try:
+        from backend.adapters.douyu import DouyuAdapter
+        m = DouyuAdapter().fetch_room_status(rid)
+        return {
+            "status": "live" if m.live_status else "offline",
+            "title": m.title or "",
+            "online": int(m.online or 0),
+            "area": m.area or "",
+            "avatar": m.avatar or "",      # 主播头像（落 status.json，前端展示）
+            "nickname": m.name or "",      # 主播昵称（用于刷新 rooms.json 显示名）
+            "time": now_str,
+        }
+    except Exception as e:
+        logger.warning("斗鱼直播检测失败 (%s): %s", rid, e)
+        return {
+            "status": "error",
+            "title": f"获取失败: {str(e)}",
+            "online": 0,
+            "area": "",
+            "avatar": "",
+            "nickname": "",
+            "time": now_str,
+        }
+
+
 # ==================== 工具函数 ====================
 
 def _as_int(v: Any) -> int:
@@ -712,11 +754,18 @@ def format_push_desp(
     name: str, platform: str, rid: str, result: Dict[str, Any]
 ) -> str:
     """格式化推送内容"""
-    platform_label = {"bilibili": "B站", "douyin": "抖音", "kuaishou": "快手"}.get(platform, platform)
+    platform_label = {
+        "bilibili": "B站",
+        "douyin": "抖音",
+        "kuaishou": "快手",
+        "douyu": "斗鱼",
+    }.get(platform, platform)
     if platform == "bilibili":
         live_url = f"https://live.bilibili.com/{rid}"
     elif platform == "douyin":
         live_url = f"https://live.douyin.com/{rid}"
+    elif platform == "douyu":
+        live_url = f"https://www.douyu.com/{rid}"
     else:  # kuaishou 等
         live_url = f"https://live.kuaishou.com/u/{rid}"
     now = bjnow().strftime("%Y-%m-%d %H:%M:%S")
@@ -771,6 +820,8 @@ def render_body(s: Dict[str, Any], event: str, cfg_all: Dict[str, Any]) -> str:
             url = f"https://live.bilibili.com/{rid}"
         elif platform == "douyin":
             url = f"https://live.douyin.com/{rid}"
+        elif platform == "douyu":
+            url = f"https://www.douyu.com/{rid}"
         else:  # kuaishou 等
             url = f"https://live.kuaishou.com/u/{rid}"
         tpl_ctx = {
@@ -973,6 +1024,9 @@ def main() -> None:
                         result = {"status": "unknown", "title": "", "online": 0, "time": now_str}
                 else:
                     result = fetch_kuaishou(rid, cfg_all)
+            elif platform == "douyu":
+                # 斗鱼走开放平台公开接口（匿名、无风控），无需降频/冷却控制
+                result = fetch_douyu(rid)
             else:
                 logger.warning("[%s] 未知平台，跳过检测: %s", name, platform)
                 result = {"status": "offline", "title": "", "online": 0, "time": now_str}
@@ -995,6 +1049,8 @@ def main() -> None:
         elif platform == "bilibili" and result.get("uname") and result["uname"] != name:
             display_name = result["uname"]
         elif platform == "kuaishou" and result.get("nickname") and result["nickname"] != name:
+            display_name = result["nickname"]
+        elif platform == "douyu" and result.get("nickname") and result["nickname"] != name:
             display_name = result["nickname"]
 
         logger.info(
