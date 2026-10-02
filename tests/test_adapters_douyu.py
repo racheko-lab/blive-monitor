@@ -211,6 +211,116 @@ def test_douyu_push_text_has_label_and_url():
     assert body == "MrGemini 开播 https://www.douyu.com/36252 douyu"
 
 
+# ==================== 房间「靓号」解析 ====================
+# 斗鱼给主播分配短号（如 15000），访问 m.douyu.com/15000 会渲染出真实房间的直播间。
+# 但公开接口 RoomApi 只认真实房间 ID（796449），传靓号会返回一个「已注销」样式的占位壳，
+# 不解析就会把一个正在直播的房间误判成废号。
+
+PRETTY_PLACEHOLDER = {
+    "error": 0,
+    "data": {
+        "room_id": "15000",
+        "room_name": "用户已注销的直播间 15000",
+        "room_status": "0",
+        "owner_name": "用户已注销",
+        "online": 0,
+        "cate_name": "英雄联盟",
+        "avatar": "https://apic.douyucdn.cn/upload/avatar/default/07_big.jpg",
+        "room_thumb": "https://rpic.douyucdn.cn/default2.gif/dy1",
+        "start_time": "1970-01-01 08:00:00",
+    },
+}
+# 靓号页面 SSR 片段：roomId 照抄 URL，rid 才是真身
+PRETTY_PAGE_HTML = (
+    '<script>window.__INIT={"roomId":"15000","rid":796449,'
+    '"nickname":"宁波小骚骚0oO"}</script>'
+)
+
+
+def test_pretty_id_placeholder_is_detected():
+    """占位壳必须被识别（否则靓号会被当废号静默 offline）。"""
+    assert DouyuAdapter._looks_like_pretty_id_placeholder(PRETTY_PLACEHOLDER["data"]) is True
+    assert DouyuAdapter._looks_like_pretty_id_placeholder(LIVE_PAYLOAD["data"]) is False
+    assert DouyuAdapter._looks_like_pretty_id_placeholder(None) is False
+
+
+def test_pretty_id_resolved_to_real_room(monkeypatch):
+    """靓号 15000：占位壳 → 页面解析出 796449 → 重查拿到真实开播态。
+
+    room_id 保留靓号（URL 用靓号，点进去由斗鱼跳转），真实房间号放 extra。
+    """
+    ad = DouyuAdapter()
+    calls = []
+
+    def fake_json(url, timeout=10):
+        calls.append(url)
+        return PRETTY_PLACEHOLDER if "/15000" in url else LIVE_PAYLOAD
+
+    monkeypatch.setattr(ad, "_http_get_json", fake_json)
+    monkeypatch.setattr(ad, "_resolve_pretty_id", lambda pid, timeout=10: "796449")
+
+    m = ad.fetch_room_status("15000")
+    assert m.live_status is True
+    assert m.name == "MrGemini"          # 来自真实房间 796449 的数据
+    assert m.room_id == "15000"          # 房间号保留靓号
+    assert m.url == "https://www.douyu.com/15000"
+    assert m.extra["resolved_room_id"] == "796449"
+    assert m.extra["is_pretty_id"] is True
+    # 两次请求：一次靓号（拿到占位壳）+ 一次真实房间
+    assert len(calls) == 2
+
+
+def test_pretty_id_unresolvable_raises(monkeypatch):
+    """占位壳 + 解析无结果 = 真废号，必须报错而不是静默 offline。"""
+    ad = DouyuAdapter()
+    monkeypatch.setattr(ad, "_http_get_json", lambda url, timeout=10: PRETTY_PLACEHOLDER)
+    monkeypatch.setattr(ad, "_resolve_pretty_id", lambda pid, timeout=10: None)
+    with pytest.raises(AdapterError):
+        ad.fetch_room_status("15000")
+
+
+def test_pretty_id_page_returns_same_id_raises(monkeypatch):
+    """页面解析回同一个号（说明不是靓号，就是废号）→ 报错。"""
+    ad = DouyuAdapter()
+    monkeypatch.setattr(ad, "_http_get_json", lambda url, timeout=10: PRETTY_PLACEHOLDER)
+    monkeypatch.setattr(ad, "_resolve_pretty_id", lambda pid, timeout=10: "15000")
+    with pytest.raises(AdapterError):
+        ad.fetch_room_status("15000")
+
+
+def test_normal_room_does_not_trigger_pretty_resolution(monkeypatch):
+    """正常房间不得触发靓号解析（省掉一次 135KB 的页面请求）。"""
+    ad = DouyuAdapter()
+    monkeypatch.setattr(ad, "_http_get_json", lambda url, timeout=10: LIVE_PAYLOAD)
+
+    def boom(pid, timeout=10):
+        raise AssertionError("正常房间不应走靓号解析")
+
+    monkeypatch.setattr(ad, "_resolve_pretty_id", boom)
+    m = ad.fetch_room_status("796449")
+    assert m.live_status is True
+    assert "is_pretty_id" not in m.extra
+
+
+def test_resolve_pretty_id_extracts_rid_not_room_id(monkeypatch):
+    """页面里必须取 `"rid"`，不能取 `"roomId"`（后者只是照抄 URL）。"""
+    ad = DouyuAdapter()
+    import urllib.request
+
+    class FakeResp:
+        def read(self):
+            return PRETTY_PAGE_HTML.encode()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda req, timeout=None: FakeResp())
+    assert ad._resolve_pretty_id("15000") == "796449"
+
+
 def _model_from(data):
     """把打桩 data 转成 RoomModel（与适配器同一套映射规则）。"""
     from backend.adapters.base import RoomModel
