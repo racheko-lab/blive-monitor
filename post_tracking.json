@@ -1,8 +1,8 @@
 {
   "douyin_32062056217": {
     "sec_uid": "MS4wLjABAAAASbtZpohJd3E4CMctcy5mTwdLJYq1wQt27I5muIshIxlT11i88tVEyQgMs34lIlDO",
-    "latest_cover": "https://p9-sign.douyinpic.com/tos-cn-p-0015/oQEVPdPB3aVjWA2IraWIo4QNaC6iA4JiAaOiT~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=f1rcuXDNwe37iYJUoIKI9alx6kE%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=202610040206435DECF3E504301844E519",
-    "latest_cover_cdn": "https://p9-sign.douyinpic.com/tos-cn-p-0015/oQEVPdPB3aVjWA2IraWIo4QNaC6iA4JiAaOiT~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=f1rcuXDNwe37iYJUoIKI9alx6kE%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=202610040206435DECF3E504301844E519",
+    "latest_cover": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/oQEVPdPB3aVjWA2IraWIo4QNaC6iA4JiAaOiT~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=WE7cdtXs6ZYIrM8XeSBqBvhBx7U%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004021141A8A4122C156A4C0BF29B",
+    "latest_cover_cdn": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/oQEVPdPB3aVjWA2IraWIo4QNaC6iA4JiAaOiT~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=WE7cdtXs6ZYIrM8XeSBqBvhBx7U%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004021141A8A4122C156A4C0BF29B",
     "latest_aweme_id": "7688543274797134330",
     "latest_ct": 1790128480,
     "mode": "api",
@@ -16,11 +16,11 @@
   "douyin_wenying0421": {
     "sec_uid": "MS4wLjABAAAA12uSTzQuBsLhr1A_bMsgPODP8h4VWkwgr3bCzdfcRagpAXHbljnnWEFtcE0I_x-J",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_wenying0421.jpg",
-    "latest_cover_cdn": "https://p3-sign.douyinpic.com/tos-cn-i-0813c001/o0z0eAGF2wCBkL7zVyeJSAEBAEUKEeRIAArYIF~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=30o1Qa5ITx1cIHJE7dSKXKa3BDA%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004020729F60AE65E722A58E837E3",
+    "latest_cover_cdn": "https://p3-pc-sign.douyinpic.com/tos-cn-p-0015/oIBaCmQ1HBPi2mKr90vwDIAAoIakm8i46gWMI~tplv-dy-360p.jpeg?lk3s=138a59ce&x-expires=1792260000&x-signature=jPbbqUzD%2FER3Z7%2Fqdjy2C6kLNR8%3D&from=327834062&s=PackSourceEnum_PUBLISH&se=false&sc=origin_cover&biz_tag=pcweb_cover&l=202610040212368BC423CEFEF1018C5F98",
     "latest_aweme_id": "7677162115043651947",
-    "latest_ct": 0,
+    "latest_ct": 1787478598,
     "mode": "api",
-    "latest_count": 0,
+    "latest_count": 1787478598,
     "nickname": "奇米蛋",
     "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_7ecd801e4f0db5f66ec9d42520cb544d.jpeg?from=2956013662",
     "latest_desc": "#宅家随拍记录",
@@ -29,8 +29,8 @@
   },
   "douyin_cm6229": {
     "sec_uid": "MS4wLjABAAAAzD6j5lM_0UpmsawPuWAuf_yJAz0d6exWp0S5ujJDqiOt-6jHsbNnCbI7GE00b38y",
-    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_cm6229.jpg",
-    "latest_cover_cdn": "https://p26-sign.douyinpic.com/tos-cn-i-0813c001/owF2aAqqsA2iArhAEzerC9vCCEyfI6UAAYQgED~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=Ail45dpIVJFPI8k%2F8m124zKuERk%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004020831CB33C613AC6768EACC5A",
+    "latest_cover": "https://p9-sign.douyinpic.com/tos-cn-i-0813c001/owF2aAqqsA2iArhAEzerC9vCCEyfI6UAAYQgED~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=9XwTAhyTLPRquECT93cNXa6910g%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=2026100402133227D9BA3506A1401927A5",
+    "latest_cover_cdn": "https://p9-sign.douyinpic.com/tos-cn-i-0813c001/owF2aAqqsA2iArhAEzerC9vCCEyfI6UAAYQgED~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=9XwTAhyTLPRquECT93cNXa6910g%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=2026100402133227D9BA3506A1401927A5",
     "latest_aweme_id": "7688416014301061028",
     "latest_ct": 0,
     "mode": "api",
@@ -50,15 +50,15 @@
     "nickname": "YShuO",
     "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_501679f83a22676c1163821e8f3a0ddc.jpeg?from=2956013662",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_Ysh03919.jpg",
-    "latest_cover_cdn": "https://p3-sign.douyinpic.com/tos-cn-i-0813/ocFvDfkrAEaCQWUMvAqgFCifIo91AAcWFAuAFm~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=oScFRMGSukGhnTEpPqHyW851f0w%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=2026100402081527D9BA3506A1401904DF",
+    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-i-0813/ocFvDfkrAEaCQWUMvAqgFCifIo91AAcWFAuAFm~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=FnoivVGDiXNVvaI8CT%2Bsj2ngP9E%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=202610040213156BFEF67C7B150FEEFA98",
     "latest_desc": "在干嘛呀☎️",
     "latest_type": "视频",
     "latest_url": "https://www.douyin.com/video/7691956213235781850"
   },
   "douyin_L88_____": {
     "sec_uid": "MS4wLjABAAAAIUjkPI5wnLh04rbUG43D8ZKsqAuWxbihVIJ5mnWVDrc",
-    "latest_cover": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=KgoM3W4%2BXVQ5PppXmusICBunOeg%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004020715C4F9AC4E1A32F50E0BAC",
-    "latest_cover_cdn": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=KgoM3W4%2BXVQ5PppXmusICBunOeg%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004020715C4F9AC4E1A32F50E0BAC",
+    "latest_cover": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=KgoM3W4%2BXVQ5PppXmusICBunOeg%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004021213B9F2FF0DC1AA8CEECB9F",
+    "latest_cover_cdn": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=KgoM3W4%2BXVQ5PppXmusICBunOeg%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004021213B9F2FF0DC1AA8CEECB9F",
     "latest_aweme_id": "7673683172215010250",
     "latest_ct": 0,
     "mode": "api",
@@ -72,7 +72,7 @@
   "douyin_88572108453": {
     "sec_uid": "MS4wLjABAAAA90170izTB10-ZfDiYPLXnib5CBXCxH6_MFaJgTNUR84E7P4b5os3SUQqESO2lymK",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_88572108453.jpg",
-    "latest_cover_cdn": "https://p3-pc-sign.douyinpic.com/tos-cn-p-0015/oAn1pNf7DQVksp6LAAFBDb9mtBfMqMAQEsgmAt~tplv-dy-360p.jpeg?lk3s=138a59ce&x-expires=1792260000&x-signature=bK5ZKhYI6RQ2gJXxSP1jktzYwU0%3D&from=327834062&s=PackSourceEnum_PUBLISH&se=false&sc=origin_cover&biz_tag=pcweb_cover&l=202610040208072E3E9474A4BD8B7D1BD8",
+    "latest_cover_cdn": "https://p26-sign.douyinpic.com/tos-cn-i-0813c001/o0E7IABA7vsdAWDV7FCzfsdMffgBVEAAGz39EL~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=sRsXaS3Eo%2FZdWwPcNEuPu0ZJzPg%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004021259AF9AFA8E172229ED21D5",
     "latest_aweme_id": "7690951719882782811",
     "latest_ct": 0,
     "mode": "api",
@@ -169,7 +169,7 @@
   "douyin_MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI": {
     "sec_uid": "MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI.jpg",
-    "latest_cover_cdn": "https://p3-sign.douyinpic.com/tos-cn-i-0813c000-ce/oYvNDEAB1xAAAHzBCMxI4ipsBZ8J4aFPygrAi~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=%2Byh2S7Rho%2BZfnEh9vxGK5JbBKGg%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004020700C204F417F0C3C00F8675",
+    "latest_cover_cdn": "https://p26-sign.douyinpic.com/tos-cn-i-0813c000-ce/oYvNDEAB1xAAAHzBCMxI4ipsBZ8J4aFPygrAi~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=UYYVWO2sk1FdlkMunNLTQoQXK9s%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261004021159D04A2849278000EEB919",
     "latest_aweme_id": "7691269694301308849",
     "latest_ct": 0,
     "mode": "api",
@@ -183,7 +183,7 @@
   "douyin_hanyitongshiwoya": {
     "sec_uid": "MS4wLjABAAAAZ5AsYinQNfJdUSkxT6UB4Wfc3SEn_KeKMc1iVjVoDhZ-2kf3o8svKNjtSlfWchb-",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_hanyitongshiwoya.jpg",
-    "latest_cover_cdn": "https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-i-0813c000-ce/osfUlD7DBxDfDeDEV4FKFIAoJ0AkQgFuusAOpA~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=1GNltapOdNPFuRHVlyuNxxffk2s%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=202610040207453AC8599883F228315061",
+    "latest_cover_cdn": "https://p26-sign.douyinpic.com/tos-cn-i-0813c000-ce/osfUlD7DBxDfDeDEV4FKFIAoJ0AkQgFuusAOpA~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791072000&x-signature=ODH9AWckhlnyoSS%2Fhv6CEBglMvA%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=202610040212446668A37755B391F21B69",
     "latest_aweme_id": "7690229202537412027",
     "latest_ct": 1790521015,
     "mode": "api",
