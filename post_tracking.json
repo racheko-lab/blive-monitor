@@ -1,32 +1,4 @@
 {
-  "douyin_wenying0421": {
-    "sec_uid": "MS4wLjABAAAA12uSTzQuBsLhr1A_bMsgPODP8h4VWkwgr3bCzdfcRagpAXHbljnnWEFtcE0I_x-J",
-    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_wenying0421.jpg",
-    "latest_cover_cdn": "https://p9-sign.douyinpic.com/tos-cn-i-0813c001/o0z0eAGF2wCBkL7zVyeJSAEBAEUKEeRIAArYIF~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=mzi9dsOgZ9nGdQm24xcd%2BLbHQqc%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165222827D66AF9C3821E374F1",
-    "latest_aweme_id": "7677162115043651947",
-    "latest_ct": 0,
-    "mode": "api",
-    "latest_count": 0,
-    "nickname": "奇米蛋",
-    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_7ecd801e4f0db5f66ec9d42520cb544d.jpeg?from=2956013662",
-    "latest_desc": "#宅家随拍记录",
-    "latest_type": "视频",
-    "latest_url": "https://www.douyin.com/video/7677162115043651947"
-  },
-  "douyin_Ysh03919": {
-    "sec_uid": "MS4wLjABAAAA7Z8yqnnaQ5llPi6TVv-G4K8Zw_JfVb9qO0ky1lOeR1YZzo9B2i43PfPh9v5jE14V",
-    "latest_aweme_id": "7691956213235781850",
-    "latest_ct": 0,
-    "mode": "api",
-    "latest_count": 0,
-    "nickname": "YShuO",
-    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_501679f83a22676c1163821e8f3a0ddc.jpeg?from=2956013662",
-    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_Ysh03919.jpg",
-    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-i-0813/ocFvDfkrAEaCQWUMvAqgFCifIo91AAcWFAuAFm~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=qzRTGo4eEdj%2FfkpBDRQ1p5MBJTE%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165308A40365C777A71EFE9F0A",
-    "latest_desc": "在干嘛呀☎️",
-    "latest_type": "视频",
-    "latest_url": "https://www.douyin.com/video/7691956213235781850"
-  },
   "kuaishou_wikw-0403-": {
     "credential_level": "anonymous",
     "cookie_used": false,
@@ -110,6 +82,34 @@
     "degraded_this_round": false,
     "gated_streak": 49
   },
+  "douyin_L88_____": {
+    "sec_uid": "MS4wLjABAAAAIUjkPI5wnLh04rbUG43D8ZKsqAuWxbihVIJ5mnWVDrc",
+    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_L88_____.jpg",
+    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=1wyyhmE0nBwd%2FZclv8CT5A8W9oA%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165720D4BECBFDB4992AE37D61",
+    "latest_aweme_id": "7673683172215010250",
+    "latest_ct": 0,
+    "mode": "api",
+    "latest_count": 0,
+    "nickname": "Leo_",
+    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-i-0813_owcAkFFumIDCm0AAnyAgfjEqpyQa9A7ADAeUkC.jpeg?from=2956013662",
+    "latest_desc": "她说给我接烟灰是她这辈子的荣誉，这面子咱得给。#虚假演绎仅供娱乐请勿模仿",
+    "latest_type": "视频",
+    "latest_url": "https://www.douyin.com/video/7673683172215010250"
+  },
+  "douyin_hanyitongshiwoya": {
+    "sec_uid": "MS4wLjABAAAAZ5AsYinQNfJdUSkxT6UB4Wfc3SEn_KeKMc1iVjVoDhZ-2kf3o8svKNjtSlfWchb-",
+    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_hanyitongshiwoya.jpg",
+    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-i-0813c000-ce/osfUlD7DBxDfDeDEV4FKFIAoJ0AkQgFuusAOpA~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=YYpgEFat1lyFoWeMZS4hFTPE1Sw%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165237EFB6FAB56DBAA0E34F9F",
+    "latest_aweme_id": "7673819892215482097",
+    "latest_ct": 0,
+    "mode": "api",
+    "latest_count": 0,
+    "nickname": "韩宜潼",
+    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_b92a7d24bfcb79f1821e16e2621863e1.jpeg?from=2956013662",
+    "latest_desc": "puppy day🐶",
+    "latest_type": "视频",
+    "latest_url": "https://www.douyin.com/video/7673819892215482097"
+  },
   "douyin_MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI": {
     "sec_uid": "MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_MS4wLjABAAAASMZtyFokppaU8Iyatpar3jIhPyYJC7r3ID5ptw4DROI.jpg",
@@ -138,24 +138,24 @@
     "latest_type": "图文",
     "latest_url": "https://www.douyin.com/note/7688543274797134330"
   },
-  "douyin_hanyitongshiwoya": {
-    "sec_uid": "MS4wLjABAAAAZ5AsYinQNfJdUSkxT6UB4Wfc3SEn_KeKMc1iVjVoDhZ-2kf3o8svKNjtSlfWchb-",
-    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_hanyitongshiwoya.jpg",
-    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-i-0813c000-ce/osfUlD7DBxDfDeDEV4FKFIAoJ0AkQgFuusAOpA~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=YYpgEFat1lyFoWeMZS4hFTPE1Sw%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165237EFB6FAB56DBAA0E34F9F",
-    "latest_aweme_id": "7673819892215482097",
+  "douyin_wenying0421": {
+    "sec_uid": "MS4wLjABAAAA12uSTzQuBsLhr1A_bMsgPODP8h4VWkwgr3bCzdfcRagpAXHbljnnWEFtcE0I_x-J",
+    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_wenying0421.jpg",
+    "latest_cover_cdn": "https://p26-sign.douyinpic.com/tos-cn-i-0813c001/o0z0eAGF2wCBkL7zVyeJSAEBAEUKEeRIAArYIF~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=Iip7oReT159Yiru5eP26hvEy58w%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165736709F442F77CB2FFF5162",
+    "latest_aweme_id": "7677162115043651947",
     "latest_ct": 0,
     "mode": "api",
     "latest_count": 0,
-    "nickname": "韩宜潼",
-    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_b92a7d24bfcb79f1821e16e2621863e1.jpeg?from=2956013662",
-    "latest_desc": "puppy day🐶",
+    "nickname": "奇米蛋",
+    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_7ecd801e4f0db5f66ec9d42520cb544d.jpeg?from=2956013662",
+    "latest_desc": "#宅家随拍记录",
     "latest_type": "视频",
-    "latest_url": "https://www.douyin.com/video/7673819892215482097"
+    "latest_url": "https://www.douyin.com/video/7677162115043651947"
   },
   "douyin_cm6229": {
     "sec_uid": "MS4wLjABAAAAzD6j5lM_0UpmsawPuWAuf_yJAz0d6exWp0S5ujJDqiOt-6jHsbNnCbI7GE00b38y",
     "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_cm6229.jpg",
-    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-i-0813c001/owF2aAqqsA2iArhAEzerC9vCCEyfI6UAAYQgED~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=H%2BJhWB02BARyblDMJTAvwkgJoc8%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165324A5DD7BB3AB7675FBDFC5",
+    "latest_cover_cdn": "https://p9-sign.douyinpic.com/tos-cn-i-0813c001/owF2aAqqsA2iArhAEzerC9vCCEyfI6UAAYQgED~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=mAqHgGn3u1ES%2FMZe7jY6j7RpnWw%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=202610031658423AD89889CCF0EEF998B2",
     "latest_aweme_id": "7688416014301061028",
     "latest_ct": 0,
     "mode": "api",
@@ -165,6 +165,20 @@
     "latest_desc": "无需完美 方得挚爱",
     "latest_type": "视频",
     "latest_url": "https://www.douyin.com/video/7688416014301061028"
+  },
+  "douyin_Ysh03919": {
+    "sec_uid": "MS4wLjABAAAA7Z8yqnnaQ5llPi6TVv-G4K8Zw_JfVb9qO0ky1lOeR1YZzo9B2i43PfPh9v5jE14V",
+    "latest_aweme_id": "7691956213235781850",
+    "latest_ct": 0,
+    "mode": "api",
+    "latest_count": 0,
+    "nickname": "YShuO",
+    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-avt-0015_501679f83a22676c1163821e8f3a0ddc.jpeg?from=2956013662",
+    "latest_cover": "https://raw.githubusercontent.com/racheko-lab/blive-monitor/master/assets/covers/douyin_Ysh03919.jpg",
+    "latest_cover_cdn": "https://p11-sign.douyinpic.com/tos-cn-i-0813/ocFvDfkrAEaCQWUMvAqgFCifIo91AAcWFAuAFm~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=qzRTGo4eEdj%2FfkpBDRQ1p5MBJTE%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165308A40365C777A71EFE9F0A",
+    "latest_desc": "在干嘛呀☎️",
+    "latest_type": "视频",
+    "latest_url": "https://www.douyin.com/video/7691956213235781850"
   },
   "douyin_88572108453": {
     "sec_uid": "MS4wLjABAAAA90170izTB10-ZfDiYPLXnib5CBXCxH6_MFaJgTNUR84E7P4b5os3SUQqESO2lymK",
@@ -179,19 +193,5 @@
     "latest_desc": "平常的一天.迎来了我的24岁#生日面 #外卖 #治愈",
     "latest_type": "视频",
     "latest_url": "https://www.douyin.com/video/7690951719882782811"
-  },
-  "douyin_L88_____": {
-    "sec_uid": "MS4wLjABAAAAIUjkPI5wnLh04rbUG43D8ZKsqAuWxbihVIJ5mnWVDrc",
-    "latest_cover": "https://p26-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=r1HxqLO1cWlB0%2Fl3E8PgTQR%2BCFc%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165206B81DAC2C6289CA29BB71",
-    "latest_cover_cdn": "https://p26-sign.douyinpic.com/tos-cn-p-0015/o0DEQZOjIiqBGBfCmeEDfB27YvAFD1mAAgtUQX~tplv-dy-cropcenter:300:400.png?lk3s=2aa63f9f&x-expires=1791036000&x-signature=r1HxqLO1cWlB0%2Fl3E8PgTQR%2BCFc%3D&from=715538335&s=PackSourceEnum_DOUYIN_REFLOW&se=true&sh=300_400&sc=cover&biz_tag=aweme_video&l=20261003165206B81DAC2C6289CA29BB71",
-    "latest_aweme_id": "7673683172215010250",
-    "latest_ct": 0,
-    "mode": "api",
-    "latest_count": 0,
-    "nickname": "Leo_",
-    "avatar": "https://p3-pc.douyinpic.com/aweme/720x720/aweme-avatar/tos-cn-i-0813_owcAkFFumIDCm0AAnyAgfjEqpyQa9A7ADAeUkC.jpeg?from=2956013662",
-    "latest_desc": "她说给我接烟灰是她这辈子的荣誉，这面子咱得给。#虚假演绎仅供娱乐请勿模仿",
-    "latest_type": "视频",
-    "latest_url": "https://www.douyin.com/video/7673683172215010250"
   }
 }
